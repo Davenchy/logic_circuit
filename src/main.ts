@@ -1,24 +1,23 @@
-import './style.css'
-import typescriptLogo from './typescript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.ts'
+import LogicCircuit from './logic_circuit/logic_circuit.ts'
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-    </a>
-    <h1>Vite + TypeScript</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite and TypeScript logos to learn more
-    </p>
-  </div>
-`
+const tripleAnd = new LogicCircuit({
+  name: 'TripleAnd',
+  inputs: ['A', 'B', 'C'],
+  outputs: ['Q', '~Q'],
+  components: {
+    and1: {
+      inputs: ['A', 'B'],
+      behavior: 'and',
+    },
+    Q: {
+      inputs: ['and1', 'C'],
+      behavior: 'and',
+    },
+    '~Q': {
+      inputs: ['Q'],
+      behavior: 'not',
+    },
+  }
+});
 
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
+console.table(tripleAnd.getState({ A: 1, B: 1, C: 1 }));
